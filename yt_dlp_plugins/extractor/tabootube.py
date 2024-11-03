@@ -1,7 +1,7 @@
 from yt_dlp.extractor.common import InfoExtractor
 
 class TabooTubeIE(InfoExtractor):
-    _VALID_URL = r'https?://(?:www\.)?tabootube\.xxx/(?!embed)(?P<id>[^/?#&]+)'
+    _VALID_URL = r'https?://(?:www\.)?tabootube\.(to|xxx)/(?!embed)(?P<id>[^/?#&]+)'
     _TESTS = []
 
     def _real_extract(self, url):
