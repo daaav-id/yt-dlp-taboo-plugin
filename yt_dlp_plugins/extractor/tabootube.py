@@ -1,7 +1,7 @@
 from yt_dlp.extractor.common import InfoExtractor
 
 class TabooTubeIE(InfoExtractor):
-    _VALID_URL = r'https?://(?:www\.)?tabootube\.(to|xxx)/(?!embed)(?P<id>[^/?#&]+)'
+    _VALID_URL = r'https?://(?:www\.)?tabootube\.(to|xxx)/?(embed/)?(?P<id>[^?&/$]+)/?$'
     _TESTS = []
 
     def _real_extract(self, url):
@@ -13,13 +13,17 @@ class TabooTubeIE(InfoExtractor):
         description = self._og_search_description(webpage)
         thumbnail = self._og_search_thumbnail(webpage)
 
-        # be lazy and send off the embed url to another extractor
-        video_url = self._twitter_search_player(webpage)
-        #video_url = self._html_search_meta('twitter:player', webpage)
-        #video_url = self._search_regex(r'name=\"twitter:player\" content="(?P<videoURL>[^"]+)"', webpage, 'videoURL')
+        # grab the first download link
+        video_url = self._search_regex(r'<span class="download-link" data-href="(?P<videoURL>[^"]+)"', webpage, 'videoURL')
+
+        # get the real id from the embed link
+        embed_video_url = self._twitter_search_player(webpage)
+        video_id = self._match_id(embed_video_url)
 
         return {
-            '_type': 'url',
+            #'_type': 'url',
             'url': video_url,
             'id': video_id,
+            'title': title,
+            'description': description,
         }
