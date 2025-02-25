@@ -13,7 +13,9 @@ class FullTabooIE(InfoExtractor):
         description = self._og_search_description(webpage)
         thumbnail = self._og_search_property('image', webpage)
 
-        video_url = self._html_search_regex(r'"embedURL" content="(?P<videoURL>[a-zA-Z0-9:/._\-]*)"', webpage, 'videoURL')
+        video_url = self._html_search_regex(r'class="responsive-player"><.*="(?P<videoURL>(http|HTTP)[a-zA-Z0-9:/._\-]*)"', webpage, 'videoURL')
+
+        #video_url = self._html_search_regex(r'"embedURL" content="(?P<videoURL>[a-zA-Z0-9:/._\-]*)"', webpage, 'videoURL')
 
         return {
             '_type': 'url_transparent',
